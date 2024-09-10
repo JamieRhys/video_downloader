@@ -42,5 +42,8 @@ class Video:
     @property
     def delete(self): return self.__delete
 
+    @delete.setter
+    def delete(self, state: bool): self.__delete = state
+
     @property
     def flac_tags(self): return self.__flac_tags
