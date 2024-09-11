@@ -22,23 +22,23 @@ from entities.Genres import Genres
 
 class FlacTags:
     def __init__(self,
-                 title: str,
-                 artist: str,
-                 band: str,
-                 album: str,
-                 release_time: str,
-                 comment: str,
-                 track: str,
-                 disc_num: str,
-                 composers: List[str],
-                 track_copyright: str,
-                 genres: List['Genres']
-                 ):
+                 title: str = None,
+                 artist: str = None,
+                 band: str = None,
+                 album: str = None,
+                 release_date: str = None,
+                 comment: str = None,
+                 track: str = None,
+                 disc_num: str = None,
+                 composers: List[str] = None,
+                 track_copyright: str = None,
+                 genres: List['Genres'] = None,
+    ):
         self.__title = title
         self.__artist = artist
         self.__band = band
         self.__album = album
-        self.__release_time = release_time
+        self.__release_date = release_date
         self.__comment = comment
         self.__track = track
         self.__disc_num = disc_num
@@ -49,20 +49,38 @@ class FlacTags:
     @property
     def title(self): return self.__title
 
+    @title.setter
+    def title(self, value: str): self.__title = value
+
     @property
     def artist(self): return self.__artist
+
+    @artist.setter
+    def artist(self, value: str): self.__artist = value
 
     @property
     def band(self): return self.__band
 
+    @band.setter
+    def band(self, value: str): self.__band = value
+
     @property
     def album(self): return self.__album
 
+    @album.setter
+    def album(self, value: str): self.__album = value
+
     @property
-    def release_time(self): return self.__release_time
+    def release_date(self): return self.__release_date
+
+    @release_date.setter
+    def release_date(self, value: str): self.__release_date = value
 
     @property
     def comment(self): return self.__comment
+
+    @comment.setter
+    def comment(self, value: str): self.__comment = value
 
     @property
     def track(self): return self.__track
@@ -76,5 +94,21 @@ class FlacTags:
     @property
     def copyright(self): return self.__copyright
 
+    @copyright.setter
+    def copyright(self, value: str): self.__copyright = value
+
     @property
     def genres(self): return self.__genres
+
+    def __str__(self):
+        return "\ttitle: " + str(self.__title) + "\n" + \
+            "\tartist: " + str(self.__artist) + "\n" + \
+            "\tband: " + str(self.__band) + "\n" + \
+            "\talbum: " + str(self.__album) + "\n" + \
+            "\trelease_date: " + str(self.__release_date) + "\n" + \
+            "\tcomment: " + str(self.__comment) + "\n" + \
+            "\ttrack: " + "\n" + \
+            "\tdisc_num: " + "\n" + \
+            "\tcomposers: " + "\n" + \
+            "\tcopyright: " + str(self.__copyright) + "\n" + \
+            "\tgenres: " + "\n"
