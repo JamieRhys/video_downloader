@@ -3,9 +3,8 @@ from PyQt6.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QHBo
     QSizePolicy, QFileDialog, QDialog
 
 from dialogs.AddVideoDialog import AddVideoDialog
+from entities.Video import Video
 from utils.color import Color
-
-video_list = []
 
 # Subclass QMainWindow to customise the application's main window.
 class MainWindow(QMainWindow):
@@ -13,6 +12,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         self.setWindowTitle("Video Downloader")
+        self.__videos = []
+        self.__list_videos = self.generate_list_videos()
 
         # Component Widgets
         self.btn_browse = QPushButton("Browse")
@@ -27,8 +28,6 @@ class MainWindow(QMainWindow):
 
         self.le_output_dir = QLineEdit()
         self.le_output_dir.setPlaceholderText("Output Directory")
-
-        self.list_urls = self.generate_list_urls()
 
         # Layouts
         self.layout_list_buttons = self.generate_layout_list_buttons()
@@ -46,10 +45,11 @@ class MainWindow(QMainWindow):
 # On Click Methods
     def onAddButtonClicked(self):
         dlg = AddVideoDialog()
-        if dlg.exec():
-            print("Success")
-        else:
-            print("Cancel!")
+        dlg.new_video.connect(self.add_video)
+        dlg.exec()
+
+
+    def __on_remove_button_clicked(self):
 
 
     def onBrowseButtonClicked(self):
@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
 
     def generate_layout_left(self):
         layout_left = QVBoxLayout()
-        layout_left.addWidget(self.list_urls)
+        layout_left.addWidget(self.__list_videos)
         layout_left.addLayout(self.layout_list_buttons)
 
         return layout_left
@@ -109,10 +109,23 @@ class MainWindow(QMainWindow):
 
 
 # Generate Widgets
-    def generate_list_urls(self):
-        list_urls = QListWidget()
-        list_urls.addItems(["One", "Two", "Three"])
-        list_urls.setFixedWidth(400)
-        list_urls.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
+    def generate_list_videos(self):
+        list_videos = QListWidget()
+        for video in self.__videos:
+            name = video.url if video.output_name is None else video.output_name
+            list_videos.addItem(name)
+        list_videos.setFixedWidth(400)
+        list_videos.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
 
-        return list_urls
+        return list_videos
+
+
+    def __refresh_video_list(self):
+        self.__list_videos.clear()
+        for video in self.__videos:
+            name = video.output_name if video.output_name else video.url
+            self.__list_videos.addItem(name)
+
+    def add_video(self, video: Video):
+        self.__videos.append(video)
+        self.__refresh_video_list()
