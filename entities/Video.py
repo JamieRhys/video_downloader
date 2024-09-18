@@ -4,8 +4,25 @@ from entities.FlacTags import FlacTags
 
 
 class VideoType(Enum):
-    Single = 0,
-    PlayList = 1,
+    SingleVideo = (0, "Single Video")
+    PlayList = (1, "Playlist")
+
+    def __init__(self, eid, name):
+        self.__id = eid
+        self.__name = name
+
+    @property
+    def id(self): return self.__id
+
+
+    @property
+    def name(self): return self.__name
+
+
+    def __str__(self): return self.__name
+
+
+    def __int__(self): return self.__id
 
 
 class Video:
@@ -13,11 +30,11 @@ class Video:
                  output_dir: str = "",
                  url: str = "",
                  output_name: str = "",
-                 video_type: VideoType = VideoType.Single,
+                 video_type: VideoType = VideoType.SingleVideo,
                  convert: bool = True,
                  delete: bool = True,
                  flac_tags: FlacTags = None
-    ):
+                 ):
         self.__output_dir = output_dir
         self.__url = url
         self.__output_name = output_name
@@ -29,6 +46,9 @@ class Video:
 
     @property
     def output_dir(self): return self.__output_dir
+
+    @output_dir.setter
+    def output_dir(self, value: str): self.__output_dir = value
 
     @property
     def url(self): return self.__url
